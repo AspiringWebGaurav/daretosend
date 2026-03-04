@@ -1,0 +1,47 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ─────────────────────────────────────────────────────────
+    // Open rules for authenticated users.
+    // All writes are handled server-side via Admin SDK.
+    // Client-side reads are allowed for any signed-in user.
+    // ─────────────────────────────────────────────────────────
+
+    // users/{uid} — any authenticated user can read
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if false; // Admin SDK only
+    }
+
+    // usernames/{username} — public read
+    match /usernames/{username} {
+      allow read: if true;
+      allow write: if false; // Admin SDK only
+    }
+
+    // messages/{messageId} — any authenticated user can read
+    match /messages/{messageId} {
+      allow read: if request.auth != null;
+      allow write: if false; // Admin SDK only
+    }
+
+    // moderation_queue/{messageId} — any authenticated user can read
+    match /moderation_queue/{messageId} {
+      allow read: if request.auth != null;
+      allow write: if false; // Admin SDK only
+    }
+
+    // system_config/{docId} — any authenticated user can read
+    match /system_config/{docId} {
+      allow read: if request.auth != null;
+      allow write: if false; // Admin SDK only
+    }
+
+    // audit_logs/{logId} — any authenticated user can read
+    match /audit_logs/{logId} {
+      allow read: if request.auth != null;
+      allow write: if false; // Admin SDK only
+    }
+  }
+}

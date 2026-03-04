@@ -1,0 +1,30 @@
+DareToSend Community License v1.0
+Source-Available Commercial License
+
+Copyright (c) 2026 DareToSend. All commercial rights reserved.
+
+1. PERMITTED USES
+Subject to the terms and conditions of this License, the Licensor grants you a non-exclusive, non-transferable, revocable license to:
+- Create public forks of the Software.
+- Modify the Software.
+- Self-host the Software for personal or internal use only.
+
+2. PROHIBITED USES
+You are strictly prohibited from:
+- Reselling the Software or any part thereof.
+- Offering the Software as a Software-as-a-Service (SaaS) or otherwise using the Software to provide services to third parties.
+- Commercial monetization of the Software in any form.
+- White-labeling the Software.
+- Removing, obscuring, or altering any branding, logos, copyright notices, or other proprietary rights notices from the Software.
+
+3. CONDITIONS
+As a condition of using this Software, you must comply with the following:
+- Independent Infrastructure: You must deploy and run the Software on your own independent Firebase project and associated infrastructure.
+- Cost Responsibility: The Licensor is not responsible for any cloud costs, billing, or expenses incurred by your deployment, hosting, or use of the Software.
+- Branding Retention: All DareToSend branding must be retained and clearly visible in the application interface.
+- License Retention: A copy of this License must be included in all copies, modifications, or forks of the Software.
+
+4. DISCLAIMER OF LIABILITY
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+By using this Software, you acknowledge that you have read, understood, and agree to be bound by the terms of this DareToSend Community License v1.0.
