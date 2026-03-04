@@ -4,6 +4,7 @@ import "./globals.css";
 import { LoadingProvider } from "@/context/LoadingContext";
 import { NavigationLoader } from "@/components/layout/NavigationLoader";
 import { GlobalErrorSetup } from "@/components/layout/GlobalErrorSetup";
+import { DeviceGate } from "@/components/layout/DeviceGate";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +32,9 @@ export default function RootLayout({
         <LoadingProvider>
           <GlobalErrorSetup />
           <NavigationLoader />
-          {children}
+          <DeviceGate>
+            {children}
+          </DeviceGate>
         </LoadingProvider>
       </body>
     </html>
