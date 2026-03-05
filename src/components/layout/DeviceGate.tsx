@@ -71,7 +71,7 @@ export function DeviceGate({ children }: { children: React.ReactNode }) {
     return (
       <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-blue-950/40 backdrop-blur-3xl p-8 overflow-hidden animate-in fade-in duration-700">
         {/* Soft breathing radial glow behind the text */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none animate-pulse duration-[4000ms]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none animate-pulse [animation-duration:4s]" />
 
         {/* Main Content */}
         <div className="relative z-10 flex flex-col items-center justify-center max-w-md text-center space-y-10">

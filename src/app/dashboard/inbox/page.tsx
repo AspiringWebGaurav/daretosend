@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { useAuth } from "@/hooks/useAuth"
 import { useRealtimeInbox } from "@/hooks/useRealtimeInbox"
+import { useUnreadCount } from "@/hooks/useUnreadCount"
 import { ErrorBoundary } from "@/components/layout/ErrorBoundary"
 
 export interface InboxMessage {
@@ -39,7 +40,8 @@ export default function InboxPage() {
 
 function InboxContent() {
     const { user, loading: authLoading } = useAuth()
-    const { messages, loading, unreadCount, error: inboxError } = useRealtimeInbox(user?.uid ?? null)
+    const { messages, loading, error: inboxError } = useRealtimeInbox(user?.uid ?? null)
+    const { unreadCount, optimisticDecrement, optimisticIncrement } = useUnreadCount(user?.uid ?? null)
     const [selectedId, setSelectedId] = React.useState<string | null>(null)
     const [searchTerm, setSearchTerm] = React.useState("")
     const [replyText, setReplyText] = React.useState("")
@@ -68,6 +70,8 @@ function InboxContent() {
         setReplySuccess(null)
         const msg = (messages as InboxMessage[]).find((m) => m.id === msgId)
         if (msg && !msg.readAt) {
+            // Optimistic: instantly update bell dot
+            optimisticDecrement()
             try {
                 // Auto-mark read on select
                 await fetch(`/api/messages/${msgId}`, {
@@ -76,12 +80,19 @@ function InboxContent() {
                     body: JSON.stringify({ action: "mark_read" })
                 })
             } catch {
-                // Non-critical
+                // Revert optimistic on failure
+                optimisticIncrement()
             }
         }
     }
 
     const handleToggleRead = async (msgId: string, isCurrentlyRead: boolean) => {
+        // Optimistic: instantly update bell dot
+        if (isCurrentlyRead) {
+            optimisticIncrement()
+        } else {
+            optimisticDecrement()
+        }
         try {
             await fetch(`/api/messages/${msgId}`, {
                 method: "PATCH",
@@ -89,7 +100,12 @@ function InboxContent() {
                 body: JSON.stringify({ action: isCurrentlyRead ? "mark_unread" : "mark_read" })
             })
         } catch {
-            // silent fail
+            // Revert optimistic on failure
+            if (isCurrentlyRead) {
+                optimisticDecrement()
+            } else {
+                optimisticIncrement()
+            }
         }
     }
 
@@ -121,6 +137,10 @@ function InboxContent() {
     const handleDelete = async (msgId: string) => {
         setIsDeleting(true)
         setActionError(null)
+        // If the message being deleted is unread, optimistically decrement
+        const msg = (messages as InboxMessage[]).find((m) => m.id === msgId)
+        const wasUnread = msg && !msg.readAt
+        if (wasUnread) optimisticDecrement()
         try {
             const res = await fetch(`/api/messages/${msgId}`, { method: "DELETE" })
             if (res.ok) {
@@ -128,10 +148,12 @@ function InboxContent() {
             } else {
                 console.error("[DTS] Delete failed:", res.status)
                 setActionError("Failed to delete message. Please try again.")
+                if (wasUnread) optimisticIncrement() // revert
             }
         } catch (err) {
             console.error("[DTS] Delete error:", err)
             setActionError("Failed to delete message. Please check your connection.")
+            if (wasUnread) optimisticIncrement() // revert
         } finally {
             setIsDeleting(false)
         }

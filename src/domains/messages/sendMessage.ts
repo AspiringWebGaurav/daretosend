@@ -104,7 +104,13 @@ export async function sendMessage(
         },
     };
 
-    await messageRef.set(messageDoc);
+    // Batch: write message + increment receiver's unreadCount atomically
+    const batch = adminDb.batch();
+    batch.set(messageRef, messageDoc);
+    batch.update(adminDb.collection(COLLECTIONS.USERS).doc(receiverId), {
+        unreadCount: FieldValue.increment(1),
+    });
+    await batch.commit();
 
     return { outcome: "delivered", messageId, warning };
 }

@@ -709,7 +709,7 @@ export default function PublicProfilePage() {
                                                     <span className="text-[11px] text-muted-foreground font-medium flex items-center gap-1.5">
                                                         Sent {msg.identityMode === 'anonymous' ? 'anonymously' : 'publicly'} to <span className="text-foreground font-bold">{profileDisplayName || `@${username}`}</span>
                                                     </span>
-                                                    <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-[180ms] ease-out">
+                                                    <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-out">
                                                         <button
                                                             type="button"
                                                             onClick={() => {

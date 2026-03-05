@@ -1,9 +1,16 @@
+"use client"
 import * as React from "react"
+import Link from "next/link"
 import { Sidebar } from "./Sidebar"
 import { GlobalLoader } from "./GlobalLoader"
 import { Bell, Search } from "lucide-react"
+import { useAuth } from "@/hooks/useAuth"
+import { useUnreadCount } from "@/hooks/useUnreadCount"
 
 export function DashboardLayout({ children, isAdmin = false }: { children: React.ReactNode, isAdmin?: boolean }) {
+    const { user } = useAuth()
+    const { unreadCount } = useUnreadCount(user?.uid ?? null)
+
     return (
         <div className="flex h-screen w-full bg-background overflow-hidden selection:bg-primary selection:text-primary-foreground">
             <Sidebar isAdmin={isAdmin} />
@@ -14,10 +21,15 @@ export function DashboardLayout({ children, isAdmin = false }: { children: React
                         <span className="hidden lg:inline-flex">Search or type a command...</span>
                     </div>
                     <div className="flex items-center gap-4">
-                        <button className="relative p-2 text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-accent">
+                        <Link
+                            href="/dashboard/inbox"
+                            className="relative p-2 text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-accent"
+                        >
                             <Bell className="h-4 w-4" />
-                            <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-primary" />
-                        </button>
+                            {unreadCount > 0 && (
+                                <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-primary animate-[pulse-dot_2s_ease-in-out_infinite]" />
+                            )}
+                        </Link>
                     </div>
                 </header>
                 <main className="relative flex-1 overflow-y-auto p-8">

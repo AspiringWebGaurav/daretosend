@@ -6,7 +6,7 @@ import { motion } from "framer-motion"
 import { LayoutDashboard, Inbox, Send, Settings, Users, ShieldAlert, LogOut, Loader2, Shield } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useAuth } from "@/hooks/useAuth"
-import { useRealtimeInbox } from "@/hooks/useRealtimeInbox"
+import { useUnreadCount } from "@/hooks/useUnreadCount"
 import { auth } from "@/lib/firebase/client"
 import { signOut } from "firebase/auth"
 
@@ -33,7 +33,7 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
     const pathname = usePathname()
     const router = useRouter()
     const { user, role, loading } = useAuth()
-    const { unreadCount } = useRealtimeInbox(user?.uid ?? null)
+    const { unreadCount } = useUnreadCount(user?.uid ?? null)
     const [isLoggingOut, setIsLoggingOut] = React.useState(false)
     const navigation = isAdmin ? adminNav : userNav
 

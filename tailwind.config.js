@@ -62,7 +62,30 @@ module.exports = {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
-			}
+			},
+			keyframes: {
+				'pulse-dot': {
+					'0%, 100%': { opacity: '1', transform: 'scale(1)' },
+					'50%': { opacity: '0.6', transform: 'scale(1.3)' },
+				},
+				'blob': {
+					'0%': {
+						transform: 'translate(0px, 0px) scale(1)',
+					},
+					'33%': {
+						transform: 'translate(30px, -50px) scale(1.1)',
+					},
+					'66%': {
+						transform: 'translate(-20px, 20px) scale(0.9)',
+					},
+					'100%': {
+						transform: 'translate(0px, 0px) scale(1)',
+					},
+				},
+			},
+			animation: {
+				'blob': 'blob 10s infinite',
+			},
 		}
 	},
 	/* eslint-disable-next-line @typescript-eslint/no-require-imports */

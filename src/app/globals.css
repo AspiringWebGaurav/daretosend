@@ -37,68 +37,28 @@
     --chart-5: 27 87% 67%;
   }
 
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --background: #09090b;
-      --foreground: #fafafa;
-      --card: #09090b;
-      --card-foreground: #fafafa;
-      --popover: #09090b;
-      --popover-foreground: #fafafa;
-      --primary: #fafafa;
-      --primary-foreground: #18181b;
-      --secondary: #27272a;
-      --secondary-foreground: #fafafa;
-      --muted: #27272a;
-      --muted-foreground: #a1a1aa;
-      --accent: #27272a;
-      --accent-foreground: #fafafa;
-      --destructive: #7f1d1d;
-      --destructive-foreground: #fafafa;
-      --border: #27272a;
-      --input: #27272a;
-      --ring: #d4d4d8;
-      
-      --sidebar-background: #09090b;
-      --sidebar-foreground: #a1a1aa;
-      --sidebar-border: #27272a;
-      --sidebar-accent: #27272a;
-      --sidebar-accent-foreground: #fafafa;
-    }
-  }
-  .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-  }
+
 }
 
 @layer base {
   * {
     @apply border-border;
   }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-background text-foreground;
+  }
+  
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  html, body {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
   }
 }

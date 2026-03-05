@@ -120,16 +120,26 @@ export async function PATCH(
 
     if (action === "mark_unread") {
         if (data.readAt !== null) {
-            await adminDb.collection(COLLECTIONS.MESSAGES).doc(messageId).update({
+            const batch = adminDb.batch();
+            batch.update(adminDb.collection(COLLECTIONS.MESSAGES).doc(messageId), {
                 readAt: null,
             });
+            batch.update(adminDb.collection(COLLECTIONS.USERS).doc(user.uid), {
+                unreadCount: FieldValue.increment(1),
+            });
+            await batch.commit();
         }
     } else {
         // Mark as read
         if (!data.readAt) {
-            await adminDb.collection(COLLECTIONS.MESSAGES).doc(messageId).update({
+            const batch = adminDb.batch();
+            batch.update(adminDb.collection(COLLECTIONS.MESSAGES).doc(messageId), {
                 readAt: FieldValue.serverTimestamp(),
             });
+            batch.update(adminDb.collection(COLLECTIONS.USERS).doc(user.uid), {
+                unreadCount: FieldValue.increment(-1),
+            });
+            await batch.commit();
         }
     }
 
@@ -162,6 +172,12 @@ export async function DELETE(
     const queueSnap = await queueRef.get();
     if (queueSnap.exists) {
         batch.delete(queueRef);
+    }
+    // If the deleted message was unread, decrement the counter
+    if (!data.readAt) {
+        batch.update(adminDb.collection(COLLECTIONS.USERS).doc(user.uid), {
+            unreadCount: FieldValue.increment(-1),
+        });
     }
     await batch.commit();
 

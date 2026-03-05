@@ -18,14 +18,16 @@ const INBOX_TIMEOUT_MS = 8000; // 8s max wait for Firestore
 /**
  * Real-time inbox hook for the authenticated user.
  * Uses Firestore onSnapshot — scoped to receiverId + status=approved.
- * Exposes messages, loading state, live unreadCount, and error.
+ * Exposes messages, loading state, and error.
  * Includes 8s safety timeout and onSnapshot error handler.
  * Unsubscribes automatically on unmount.
+ *
+ * NOTE: unreadCount is NOT tracked here. Use useUnreadCount instead,
+ * which listens to users/{uid}.unreadCount (single-doc, no collection scan).
  */
 export function useRealtimeInbox(uid: string | null) {
     const [messages, setMessages] = useState<DocumentData[]>([]);
     const [loading, setLoading] = useState(true);
-    const [unreadCount, setUnreadCount] = useState(0);
     const [error, setError] = useState<string | null>(null);
     // Track the previous uid to avoid stale subscription handling
     const prevUidRef = useRef<string | null>(null);
@@ -35,7 +37,6 @@ export function useRealtimeInbox(uid: string | null) {
             // uid changed to null — defer state update via scheduler
             const id = setTimeout(() => {
                 setMessages([]);
-                setUnreadCount(0);
                 setLoading(false);
                 setError(null);
             }, 0);
@@ -66,7 +67,6 @@ export function useRealtimeInbox(uid: string | null) {
                 clearTimeout(timeoutId);
                 const docs = snap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
                 setMessages(docs);
-                setUnreadCount(docs.filter((d: DocumentData) => !d.readAt).length);
                 setLoading(false);
                 setError(null);
             },
@@ -84,6 +84,5 @@ export function useRealtimeInbox(uid: string | null) {
         };
     }, [uid]);
 
-    return { messages, loading, unreadCount, error };
+    return { messages, loading, error };
 }
-
