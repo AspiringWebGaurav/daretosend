@@ -40,14 +40,9 @@ export function proxy(request: NextRequest): NextResponse {
 
 export const config = {
     matcher: [
-        /*
-         * Match all request paths EXCEPT:
-         * - _next/static (static files)
-         * - _next/image (image optimization)
-         * - favicon.ico
-         * - /api/* (API routes handle their own auth)
-         * - Public pages
-         */
-        "/((?!_next/static|_next/image|favicon.ico|api/).*)",
+        "/dashboard",
+        "/dashboard/:path*",
+        "/admin",
+        "/admin/:path*",
     ],
 };
