@@ -1,4 +1,3 @@
-/* eslint-disable react-compiler/react-compiler */
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -45,7 +44,6 @@ export function useRealtimeInbox(uid: string | null) {
         }
 
         prevUidRef.current = uid;
-        setError(null);
 
         const q = query(
             collection(db, COLLECTIONS.MESSAGES),

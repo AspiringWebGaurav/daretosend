@@ -5,7 +5,7 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Shield, LogOut, ChevronDown, Copy, Check, Instagram, Twitter, Linkedin, MessageCircle, Share2, ArrowRight } from "lucide-react"
+import { Shield, LogOut, ChevronDown, Copy, Check, Instagram, Twitter, Linkedin, MessageCircle, ArrowRight } from "lucide-react"
 import { useAuth } from "@/hooks/useAuth"
 import { signOut, type User } from "firebase/auth"
 import { auth } from "@/lib/firebase/client"
@@ -75,6 +75,7 @@ function UserDropdown({ user }: UserDropdownProps) {
             alt=""
             width={28}
             height={28}
+            unoptimized
             className="rounded-full ring-1 ring-border shrink-0 block"
           />
         ) : (
@@ -296,9 +297,20 @@ function HowItWorks() {
 
 function ViralShareSection() {
   const [copied, setCopied] = React.useState(false);
+  const [host, setHost] = React.useState("daretosend.eu.cc");
   const router = useRouter();
 
-  const copyLink = () => {
+  React.useEffect(() => {
+    if (typeof window !== "undefined" && window.location.host) {
+      setHost(window.location.host);
+    }
+  }, []);
+
+  const copyLink = async () => {
+    const url = typeof window !== "undefined" ? `${window.location.origin}/username` : `https://${host}/username`;
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch { }
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -323,7 +335,7 @@ function ViralShareSection() {
 
         <div className="flex items-center justify-center p-1 bg-neutral-800/80 rounded-2xl max-w-sm mx-auto border border-neutral-700/50 backdrop-blur-sm shadow-inner group transition-all hover:bg-neutral-800">
           <div className="flex-1 px-4 py-3 text-left font-mono text-sm sm:text-base text-neutral-300 truncate select-none">
-            daretosend.eu.cc/<span className="text-white font-semibold">username</span>
+            {host}/<span className="text-white font-semibold">username</span>
           </div>
           <button
             onClick={copyLink}

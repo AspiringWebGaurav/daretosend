@@ -53,10 +53,10 @@ function DashboardContent() {
         else if (!authLoading) setProfileLoading(false)
     }, [user, authLoading, fetchProfile])
 
-    // Use the absolute claimedLink if available, otherwise just use username if it has one (legacy fallback)
-    const profileLink = profile?.claimedLink || (profile?.username
+    // Dynamically build profile link from active origin, falling back to claimedLink
+    const profileLink = profile?.username
         ? `${typeof window !== "undefined" ? window.location.origin : ""}/${profile.username}`
-        : null)
+        : (profile?.claimedLink || null)
 
     const handleCopy = async () => {
         if (!profileLink) return

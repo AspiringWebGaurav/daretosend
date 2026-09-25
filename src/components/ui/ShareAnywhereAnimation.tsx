@@ -14,6 +14,13 @@ type AnimationState =
 export function ShareAnywhereAnimation() {
   const [animState, setAnimState] = useState<AnimationState>("profile_initial")
   const [typedText, setTypedText] = useState("")
+  const [host, setHost] = useState("daretosend.eu.cc")
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.host) {
+      setHost(window.location.host)
+    }
+  }, [])
   
   const TYPING_MESSAGE = "You explain things really clearly."
 
@@ -126,7 +133,7 @@ export function ShareAnywhereAnimation() {
                         className="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 text-indigo-600 rounded-full text-sm font-medium border border-indigo-100/50"
                     >
                         <LinkIcon className="w-3.5 h-3.5" />
-                        daretosend.eu.cc/gaurav
+                        {host}/gaurav
                     </motion.div>
                 </motion.div>
               </div>

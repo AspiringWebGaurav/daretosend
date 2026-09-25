@@ -265,7 +265,7 @@ function SentContent() {
                             <Input
                                 value={linkInput}
                                 onChange={(e) => setLinkInput(e.target.value)}
-                                placeholder="https://daretosend.com/username"
+                                placeholder={`${typeof window !== "undefined" ? window.location.origin : "https://daretosend.eu.cc"}/username`}
                                 className={`pl-10 h-12 text-base transition-colors ${validationError ? 'border-destructive focus-visible:ring-destructive' : ''} ${resolvedUsername && !validationError ? 'border-green-500 bg-green-500/5 focus-visible:ring-green-500/50' : ''}`}
                             />
                         </div>

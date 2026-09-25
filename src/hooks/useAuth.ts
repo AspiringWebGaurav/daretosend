@@ -47,7 +47,7 @@ export function useAuth(): AuthState {
                                 prev.loading ? { user: parsed.user as User, role: parsed.role, loading: false } : prev
                             );
                         }
-                    } catch (e) {
+                    } catch {
                         // ignore parse errors
                     }
                 }

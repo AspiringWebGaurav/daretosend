@@ -20,11 +20,19 @@ export async function GET(
     const data = snap.data() as UserDoc;
 
     // Return only public fields
-    return ok({
-        uid: data.uid,
-        displayName: data.displayName,
-        username: data.username,
-        photoURL: data.photoURL,
-        createdAt: data.createdAt,
-    });
+    return ok(
+        {
+            uid: data.uid,
+            displayName: data.displayName,
+            username: data.username,
+            photoURL: data.photoURL,
+            createdAt: data.createdAt,
+        },
+        200,
+        {
+            headers: {
+                "Cache-Control": "public, max-age=60, s-maxage=300, stale-while-revalidate=600",
+            },
+        }
+    );
 }

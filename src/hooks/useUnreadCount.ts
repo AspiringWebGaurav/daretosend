@@ -25,19 +25,24 @@ export function useUnreadCount(uid: string | null) {
 
     useEffect(() => {
         if (!uid) {
-            setCount(0);
-            setLoading(false);
+            const timeoutId = setTimeout(() => {
+                setCount(0);
+                setLoading(false);
+            }, 0);
             serverCountRef.current = 0;
             optimisticDeltaRef.current = 0;
-            return;
+            return () => clearTimeout(timeoutId);
         }
 
-        setLoading(true);
+        const loadingTimeoutId = setTimeout(() => {
+            setLoading(true);
+        }, 0);
         optimisticDeltaRef.current = 0;
 
         const unsub = onSnapshot(
             doc(db, COLLECTIONS.USERS, uid),
             (snap) => {
+                clearTimeout(loadingTimeoutId);
                 const data = snap.data();
                 const serverVal = Math.max(0, (data?.unreadCount as number) ?? 0);
                 serverCountRef.current = serverVal;
@@ -47,12 +52,16 @@ export function useUnreadCount(uid: string | null) {
                 setLoading(false);
             },
             (err) => {
+                clearTimeout(loadingTimeoutId);
                 console.error("[DTS] useUnreadCount onSnapshot error:", err);
                 setLoading(false);
             }
         );
 
-        return () => unsub();
+        return () => {
+            clearTimeout(loadingTimeoutId);
+            unsub();
+        };
     }, [uid]);
 
     const optimisticDecrement = useCallback(() => {

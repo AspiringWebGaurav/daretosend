@@ -121,6 +121,7 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
                     <div className="flex items-center justify-between rounded-xl p-2 hover:bg-muted/50 transition-colors group/profile cursor-default">
                         <div className="flex items-center gap-3 min-w-0">
                             {user?.photoURL ? (
+                                /* eslint-disable-next-line @next/next/no-img-element */
                                 <img src={user.photoURL} alt="" className="h-9 w-9 rounded-full ring-1 ring-border shadow-sm shrink-0" />
                             ) : (
                                 <div className="h-9 w-9 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-semibold shrink-0">

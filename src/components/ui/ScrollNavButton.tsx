@@ -34,9 +34,12 @@ export function ScrollNavButton() {
     useEffect(() => {
         // Passive listener for better performance
         window.addEventListener("scroll", handleScroll, { passive: true })
-        // Initial check
-        handleScroll()
-        return () => window.removeEventListener("scroll", handleScroll)
+        // Initial check deferred to next animation frame
+        const rafId = requestAnimationFrame(handleScroll)
+        return () => {
+            cancelAnimationFrame(rafId)
+            window.removeEventListener("scroll", handleScroll)
+        }
     }, [handleScroll])
 
     const handleClick = () => {
@@ -51,10 +54,9 @@ export function ScrollNavButton() {
 
     // Not rendering at all on mobile/tablet (using a matchMedia approach or CSS hidden).
     // We use hidden md:flex here, but we also don't even mount its DOM tree if width < 768px to keep DOM clean as requested.
-    const [isDesktop, setIsDesktop] = useState(true)
+    const [isDesktop, setIsDesktop] = useState(() => typeof window !== "undefined" ? window.innerWidth >= 768 : true)
     useEffect(() => {
         const checkIsDesktop = () => setIsDesktop(window.innerWidth >= 768)
-        checkIsDesktop()
         window.addEventListener("resize", checkIsDesktop, { passive: true })
         return () => window.removeEventListener("resize", checkIsDesktop)
     }, [])

@@ -32,10 +32,18 @@ export async function GET(
         }
     }
 
-    return ok({
-        exists: true,
-        username: username.toLowerCase(),
-        displayName,
-        uid: uid || null
-    });
+    return ok(
+        {
+            exists: true,
+            username: username.toLowerCase(),
+            displayName,
+            uid: uid || null,
+        },
+        200,
+        {
+            headers: {
+                "Cache-Control": "public, max-age=60, s-maxage=300, stale-while-revalidate=600",
+            },
+        }
+    );
 }

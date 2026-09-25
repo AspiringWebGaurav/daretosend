@@ -7,7 +7,6 @@ export function DeviceGate({ children }: { children: React.ReactNode }) {
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [hasMounted, setHasMounted] = useState<boolean>(false);
   const [typedTitle, setTypedTitle] = useState("");
-  const [isTypingComplete, setIsTypingComplete] = useState(false);
 
   const fullTitle = "Desktop Only";
 
@@ -43,8 +42,6 @@ export function DeviceGate({ children }: { children: React.ReactNode }) {
             currentIndex++;
             // 3x slower: ~200ms per character
             timeoutId = setTimeout(typeChar, 200);
-          } else {
-            setIsTypingComplete(true);
           }
         };
         typeChar();

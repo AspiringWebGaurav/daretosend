@@ -7,11 +7,34 @@ export function getBaseUrl(): string {
     if (typeof window !== "undefined") {
         return window.location.origin;
     }
+    if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+        return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+    }
     if (process.env.VERCEL_URL) {
         return `https://${process.env.VERCEL_URL}`;
     }
-    // Fallback gracefully to the environment variable if defined, else we cannot determine origin statically
-    return process.env.NEXT_PUBLIC_SITE_URL || "";
+    // Fallback gracefully to the environment variable if defined, else default
+    return process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+}
+
+export function getHost(): string {
+    if (typeof window !== "undefined") {
+        return window.location.host;
+    }
+    if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+        return process.env.VERCEL_PROJECT_PRODUCTION_URL;
+    }
+    if (process.env.VERCEL_URL) {
+        return process.env.VERCEL_URL;
+    }
+    if (process.env.NEXT_PUBLIC_SITE_URL) {
+        try {
+            return new URL(process.env.NEXT_PUBLIC_SITE_URL).host;
+        } catch {
+            return process.env.NEXT_PUBLIC_SITE_URL.replace(/^https?:\/\//, "");
+        }
+    }
+    return "daretosend.eu.cc";
 }
 
 /**

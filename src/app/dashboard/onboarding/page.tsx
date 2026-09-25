@@ -303,7 +303,7 @@ export default function OnboardingPage() {
                                             <label className="text-sm font-medium text-foreground">Choose your username</label>
                                             <div className={`flex items-center gap-0 rounded-lg border bg-background overflow-hidden transition-all duration-200 ${inputBorderClass}`}>
                                                 <span className="text-sm text-muted-foreground px-3.5 py-3 bg-muted/40 border-r whitespace-nowrap font-mono">
-                                                    {typeof window !== "undefined" ? window.location.host : "daretosend.com"}/
+                                                    {typeof window !== "undefined" ? window.location.host : "daretosend.eu.cc"}/
                                                 </span>
                                                 <Input
                                                     placeholder="your_username"

@@ -12,8 +12,8 @@ export interface ApiError {
 
 export type ApiResponse<T = unknown> = ApiSuccess<T> | ApiError;
 
-export function ok<T>(data: T, status = 200): NextResponse<ApiSuccess<T>> {
-    return NextResponse.json({ success: true, data }, { status });
+export function ok<T>(data: T, status = 200, init?: ResponseInit): NextResponse<ApiSuccess<T>> {
+    return NextResponse.json({ success: true, data }, { status, ...init });
 }
 
 export function err(

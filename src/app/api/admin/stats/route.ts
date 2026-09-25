@@ -28,10 +28,18 @@ export async function GET() {
             .get(),
     ]);
 
-    return ok({
-        totalUsers: usersSnap.data().count,
-        totalMessages: messagesSnap.data().count,
-        pendingModeration: queueSnap.data().count,
-        bannedUsers: bannedSnap.data().count,
-    });
+    return ok(
+        {
+            totalUsers: usersSnap.data().count,
+            totalMessages: messagesSnap.data().count,
+            pendingModeration: queueSnap.data().count,
+            bannedUsers: bannedSnap.data().count,
+        },
+        200,
+        {
+            headers: {
+                "Cache-Control": "private, max-age=10, stale-while-revalidate=30",
+            },
+        }
+    );
 }

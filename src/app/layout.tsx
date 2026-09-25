@@ -18,7 +18,10 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
+import { getBaseUrl } from "@/lib/env";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(getBaseUrl()),
   title: "DareToSend",
   description: "Moderation-first anonymous feedback platform",
 };
