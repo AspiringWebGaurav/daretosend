@@ -35,5 +35,11 @@
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.19",
     "typescript": "^5"
+  },
+  "allowScripts": {
+    "@firebase/util@1.14.0": true,
+    "protobufjs@7.5.4": true,
+    "sharp@0.34.5": true,
+    "unrs-resolver@1.11.1": true
   }
 }
